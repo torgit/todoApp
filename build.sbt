@@ -13,3 +13,7 @@ libraryDependencies ++= Seq(
   "org.scalatestplus.play" %% "scalatestplus-play" % "1.5.1" % Test
 )
 
+libraryDependencies += "org.sorm-framework" % "sorm" % "0.3.20"
+
+libraryDependencies += specs2 % Test
+
