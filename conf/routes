@@ -13,8 +13,8 @@
 # GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)
 
 #For ToDoApp
-GET     /todoList                   controllers.ToDoController.getAll
-GET     /todo/:subject              controllers.ToDoController.get(subject: String)
-POST    /todo/create                controllers.ToDoController.create
-POST    /todo/update                controllers.ToDoController.update
-POST    /todo/remove                controllers.ToDoController.remove
+GET     /todoList                  controllers.ToDoController.getAll
+GET     /todo/:subject             controllers.ToDoController.get(subject: String)
+POST    /todoCreate                controllers.ToDoController.create
+POST    /todoUpdate                controllers.ToDoController.update
+POST    /todoRemove                controllers.ToDoController.remove

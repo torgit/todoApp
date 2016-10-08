@@ -1,49 +1,55 @@
-This is your new Play application
+ToDo Application
 =================================
 
-This file will be packaged with your application when using `activator dist`.
-
-There are several demonstration files available in this template.
-
-Controllers
-===========
-
-- HomeController.scala:
-
-  Shows how to handle simple HTTP requests.
-
-- AsyncController.scala:
-
-  Shows how to do asynchronous programming when handling a request.
-
-- CountController.scala:
-
-  Shows how to inject a component into a controller and use the component when
-  handling requests.
-
-Components
-==========
-
-- Module.scala:
-
-  Shows how to use Guice to bind all the components needed by your application.
-
-- Counter.scala:
-
-  An example of a component that contains state, in this case a simple counter.
-
-- ApplicationTimer.scala:
-
-  An example of a component that starts when the application starts and stops
-  when the application stops.
-
-Filters
+Require
 =======
+1. Java 1.8
+2. Scala version 2.11.7
+3. sbt version 0.13.11 or install activator from https://www.playframework.com/download
 
-- Filters.scala:
+Starting application
+====================
+Using sbt in todo directory
+1. sbt compile
+2. sbt run
 
-  Creates the list of HTTP filters used by your application.
+Using activator in todo directory
+1. activator run
 
-- ExampleFilter.scala
+Endpoints
+=========
+GET
+===
+1. http://localhost:9000/todoList
+=> Using to get all todo records
 
-  A simple filter that adds a header to every response.
+2. http://localhost:9000/todo/:subject
+=> Using to get a specific todo subject eg. http://localhost:9000/todo/Reading for todo with subject Reading(case sensitive)
+
+POST
+====
+All post endpoints using the same request structure as follows
+
+{
+	"todos":[
+		{
+			"subject":"Reading",
+			"content":"Read a magazine",
+			"status":"pending"
+		},
+		{
+			"subject":"Playing",
+			"content":"Play games",
+			"status":"done"
+		}
+		]
+}
+
+1. http://localhost:9000/todoCreate
+=> Using to create todos with subject as a key
+
+2. http://localhost:9000/todoRemove
+=> Using to remove todos with subject as a key
+
+3. http://localhost:9000/todoUpdate
+=> Using to update todos with subject as a key

@@ -4,55 +4,60 @@ import models._
 import play.api.cache._
 import com.google.inject.{ImplementedBy, Inject}
 
+import scala.concurrent.{ExecutionContext, Future}
+
 /**
   * Created by Suphaphong on 10/6/2016.
   */
 @ImplementedBy(classOf[ToDoServiceImpl])
 trait ToDoService {
-  def getAll: Seq[ToDo]
-  def get(subject: String): Option[ToDo]
-  def save(todos: Seq[ToDo]): Unit
-  def update(todos: Seq[ToDo])
-  def delete(info: Seq[String]): Unit
+  def getAll(implicit exec: ExecutionContext): Future[Seq[ToDo]]
+  def get(subject: String)(implicit exec: ExecutionContext): Future[Option[ToDo]]
+  def save(todos: Seq[ToDo])(implicit exec: ExecutionContext): Future[Unit]
+  def update(todos: Seq[ToDo])(implicit exec: ExecutionContext): Future[Unit]
+  def delete(info: Seq[String])(implicit exec: ExecutionContext): Future[Unit]
 }
 
 class ToDoServiceImpl @Inject()(cache: CacheApi) extends ToDoService {
 
-  override def getAll: Seq[ToDo] = {
+  override def getAll(implicit exec: ExecutionContext): Future[Seq[ToDo]] = {
     try {
       def fetchedTodo = fetchTodo()
       fetchedTodo
     }
     catch {
       case e: Exception =>
+        println(e.getMessage)
         println("Fail to fetch")
-        Seq.empty
+        Future.successful(Seq.empty)
     }
   }
 
-  override def get(subject: String): Option[ToDo] = {
+  override def get(subject: String)(implicit exec: ExecutionContext): Future[Option[ToDo]] = {
     try {
       def fetchedTodo = fetchTodo(subject)
       fetchedTodo
     }
     catch {
       case e: Exception =>
+        println(e.getMessage)
         println("Fail to fetch")
-        None
+        Future.successful(None)
     }
   }
 
-  override def save(todos: Seq[ToDo]): Unit = {
+  override def save(todos: Seq[ToDo])(implicit exec: ExecutionContext): Future[Unit] = Future {
     try {
       todos.foreach(Db.save)
     }
     catch {
       case e: Exception =>
+        println(e.getMessage)
         println("Fail to save")
     }
   }
 
-  override def delete(info: Seq[String]): Unit = {
+  override def delete(info: Seq[String])(implicit exec: ExecutionContext): Future[Unit] = Future {
     info.foreach { i =>
       try {
         Db.query[ToDo].whereEqual("subject", i)
@@ -67,15 +72,15 @@ class ToDoServiceImpl @Inject()(cache: CacheApi) extends ToDoService {
     }
   }
 
-  def fetchTodo(subject: String): Option[ToDo] = {
+  def fetchTodo(subject: String)(implicit exec: ExecutionContext): Future[Option[ToDo]] = Future {
     Db.query[ToDo].whereEqual("subject", subject).fetch().headOption
   }
 
-  def fetchTodo(): Seq[ToDo] = {
+  def fetchTodo()(implicit exec: ExecutionContext): Future[Seq[ToDo]] = Future {
     Db.query[ToDo].fetch()
   }
 
-  override def update(todos: Seq[ToDo]): Unit = {
+  override def update(todos: Seq[ToDo])(implicit exec: ExecutionContext): Future[Unit] = Future {
     try {
       todos.foreach { newToDo =>
         Db.query[ToDo]
@@ -87,6 +92,7 @@ class ToDoServiceImpl @Inject()(cache: CacheApi) extends ToDoService {
     }
     catch {
       case e: Exception =>
+        println(e.getMessage)
         println("Fail to update")
     }
   }
