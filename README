@@ -3,18 +3,14 @@ ToDo Application
 
 Require
 =======
-1. Java 1.8
-2. Scala version 2.11.7
-3. sbt version 0.13.11 or install activator from https://www.playframework.com/download
+1. Java 1.8 -> http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html
+2. sbt version 0.13.11 -> http://www.scala-sbt.org/0.13.1/docs/Getting-Started/Setup.html
 
 Starting application
 ====================
-Using sbt in todo directory
-1. sbt compile
-2. sbt run
-
-Using activator in todo directory
-1. activator run
+1. go to /todo directory
+2. sbt compile
+3. sbt run
 
 Endpoints
 =========
